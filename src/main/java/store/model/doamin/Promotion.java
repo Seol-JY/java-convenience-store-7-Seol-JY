@@ -60,4 +60,8 @@ public class Promotion {
                 dto.endDate()
         );
     }
+
+    public String getName() {
+        return name;
+    }
 }
