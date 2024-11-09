@@ -1,4 +1,4 @@
-package store.model.doamin;
+package store.model.domain;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

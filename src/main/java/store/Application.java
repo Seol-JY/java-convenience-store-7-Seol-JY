@@ -4,8 +4,8 @@ import java.util.List;
 import store.dto.ProductFileDto;
 import store.dto.PromotionFileDto;
 import store.loader.FileDataLoader;
-import store.model.doamin.Promotion;
-import store.model.doamin.Promotions;
+import store.model.domain.Promotion;
+import store.model.domain.Promotions;
 
 public class Application {
     public static void main(String[] args) {
