@@ -67,12 +67,12 @@ public class OrderParser {
             throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
 
-        String firstPart = parts[1];
+        String firstPart = parts[0].strip();
         if (firstPart.contains("[") || firstPart.contains("]")) {
             throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
 
-        String secondPart = parts[1];
+        String secondPart = parts[1].strip();
         if (!secondPart.chars().allMatch(Character::isDigit)) {
             throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
