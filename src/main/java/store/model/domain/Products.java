@@ -3,7 +3,7 @@ package store.model.domain;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import store.dto.ProductFileDto;
+import store.dto.ProductDto;
 
 public class Products {
     private static final String NOT_FOUND_PROMOTION_MESSAGE = "존재하지 않는 프로모션입니다: %s";
@@ -14,9 +14,9 @@ public class Products {
         this.values = values;
     }
 
-    public static Products from(List<ProductFileDto> productDtos, Promotions promotions) {
-        Map<String, List<ProductFileDto>> productsByName = productDtos.stream()
-                .collect(Collectors.groupingBy(ProductFileDto::name));
+    public static Products from(List<ProductDto> productDtos, Promotions promotions) {
+        Map<String, List<ProductDto>> productsByName = productDtos.stream()
+                .collect(Collectors.groupingBy(ProductDto::name));
 
         List<Product> products = productsByName.entrySet().stream()
                 .map(entry -> createProduct(entry.getKey(), entry.getValue(), promotions))
@@ -27,12 +27,12 @@ public class Products {
 
     private static Product createProduct(
             String productName,
-            List<ProductFileDto> dtos,
+            List<ProductDto> dtos,
             Promotions promotions
     ) {
         Product.Builder builder = Product.builder(productName);
 
-        for (ProductFileDto dto : dtos) {
+        for (ProductDto dto : dtos) {
             addStockToBuilder(builder, dto, promotions);
         }
 
@@ -41,7 +41,7 @@ public class Products {
 
     private static void addStockToBuilder(
             Product.Builder builder,
-            ProductFileDto dto,
+            ProductDto dto,
             Promotions promotions
     ) {
         ProductStock stock = ProductStock.of(dto.price(), dto.quantity());

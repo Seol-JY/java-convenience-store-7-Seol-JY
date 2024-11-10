@@ -2,7 +2,7 @@ package store.dto;
 
 import store.util.NumberParser;
 
-public record ProductFileDto(
+public record ProductDto(
         String name,
         Integer price,
         Integer quantity,
@@ -11,7 +11,7 @@ public record ProductFileDto(
 
     private static final String NULL_PROMOTION = "null";
 
-    public static ProductFileDto of(
+    public static ProductDto of(
             final String rawName,
             final String rawPrice,
             final String rawQuantity,
@@ -22,7 +22,7 @@ public record ProductFileDto(
             promotion = null;
         }
 
-        return new ProductFileDto(
+        return new ProductDto(
                 rawName,
                 NumberParser.parse(rawPrice),
                 NumberParser.parse(rawQuantity),

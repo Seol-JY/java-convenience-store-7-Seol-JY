@@ -1,7 +1,7 @@
 package store;
 
 import java.util.List;
-import store.dto.ProductFileDto;
+import store.dto.ProductDto;
 import store.dto.PromotionFileDto;
 import store.loader.FileDataLoader;
 import store.model.domain.Products;
@@ -10,7 +10,7 @@ import store.model.domain.Promotions;
 
 public class Application {
     public static void main(String[] args) {
-        List<ProductFileDto> load = new FileDataLoader<>(ProductFileDto.class)
+        List<ProductDto> load = new FileDataLoader<>(ProductDto.class)
                 .load("src/main/resources/products.md");
         List<PromotionFileDto> load2 = new FileDataLoader<>(PromotionFileDto.class)
                 .load("src/main/resources/promotions.md");

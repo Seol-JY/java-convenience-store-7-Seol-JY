@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import store.dto.ProductFileDto;
+import store.dto.ProductDto;
 import store.dto.PromotionFileDto;
 
 class ProductsTest {
@@ -16,9 +16,9 @@ class ProductsTest {
         @Test
         void 일반_상품만_있는_목록을_생성한다() {
             // given
-            List<ProductFileDto> dtos = List.of(
-                    ProductFileDto.of("상품1", "1000", "10", "null"),
-                    ProductFileDto.of("상품2", "2000", "20", "null")
+            List<ProductDto> dtos = List.of(
+                    ProductDto.of("상품1", "1000", "10", "null"),
+                    ProductDto.of("상품2", "2000", "20", "null")
             );
             Promotions promotions = Promotions.from(List.of());
 
@@ -34,9 +34,9 @@ class ProductsTest {
             // given
             String promotionName = "테스트프로모션";
             Promotions promotions = Promotions.from(List.of(createPromotion(promotionName)));
-            List<ProductFileDto> dtos = List.of(
-                    ProductFileDto.of("상품1", "1000", "10", "null"),
-                    ProductFileDto.of("상품2", "2000", "20", promotionName)
+            List<ProductDto> dtos = List.of(
+                    ProductDto.of("상품1", "1000", "10", "null"),
+                    ProductDto.of("상품2", "2000", "20", promotionName)
             );
 
             // when
@@ -51,9 +51,9 @@ class ProductsTest {
             // given
             String promotionName = "테스트프로모션";
             Promotions promotions = Promotions.from(List.of(createPromotion(promotionName)));
-            List<ProductFileDto> dtos = List.of(
-                    ProductFileDto.of("동일상품", "1000", "10", "null"),
-                    ProductFileDto.of("동일상품", "800", "5", promotionName)
+            List<ProductDto> dtos = List.of(
+                    ProductDto.of("동일상품", "1000", "10", "null"),
+                    ProductDto.of("동일상품", "800", "5", promotionName)
             );
 
             // when
@@ -66,7 +66,7 @@ class ProductsTest {
         @Test
         void 빈_상품_목록을_생성한다() {
             // given
-            List<ProductFileDto> dtos = List.of();
+            List<ProductDto> dtos = List.of();
             Promotions promotions = Promotions.from(List.of());
 
             // when
@@ -83,8 +83,8 @@ class ProductsTest {
         void 존재하지_않는_프로모션으로_상품을_생성하면_예외가_발생한다() {
             // given
             String nonExistentPromotion = "존재하지_않는_프로모션";
-            List<ProductFileDto> dtos = List.of(
-                    ProductFileDto.of("상품1", "1000", "10", nonExistentPromotion)
+            List<ProductDto> dtos = List.of(
+                    ProductDto.of("상품1", "1000", "10", nonExistentPromotion)
             );
             Promotions promotions = Promotions.from(List.of());
 
