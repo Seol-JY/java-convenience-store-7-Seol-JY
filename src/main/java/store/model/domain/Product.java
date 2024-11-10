@@ -1,6 +1,8 @@
 package store.model.domain;
 
 
+import java.time.LocalDate;
+
 public class Product {
     private final String name;
     private final ProductStock normalStock;
@@ -16,6 +18,28 @@ public class Product {
 
     public static Builder builder(final String name) {
         return new Builder(name);
+    }
+
+    public Integer getTotalStock(final LocalDate date) {
+        int total = 0;
+
+        if (normalStock != null) {
+            total += normalStock.getQuantity();
+        }
+
+        if (isPromotional(date)) {
+            total += promotionalStock.getQuantity();
+        }
+
+        return total;
+    }
+
+    private boolean isPromotional(final LocalDate date) {
+        if (promotion == null) {
+            return false;
+        }
+
+        return promotion.isApplicable(date);
     }
 
     public String getName() {

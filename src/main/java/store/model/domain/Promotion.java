@@ -1,5 +1,6 @@
 package store.model.domain;
 
+import java.time.LocalDate;
 import store.dto.PromotionFileDto;
 import store.vo.DateRange;
 
@@ -47,6 +48,10 @@ public class Promotion {
                 dto.get(),
                 DateRange.of(dto.startDate(), dto.endDate())
         );
+    }
+
+    public boolean isApplicable(final LocalDate date) {
+        return dateRange.contains(date);
     }
 
     public String getName() {

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static store.constant.ExceptionMessage.PRODUCT_NOT_FOUND;
 import static store.constant.ExceptionMessage.WRONG_ORDER_INPUT;
 
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -38,7 +39,7 @@ class OrderContextTest {
             );
 
             // when
-            OrderContext orderContext = OrderContext.from(items, products);
+            OrderContext orderContext = OrderContext.of(LocalDate.now(), items, products);
 
             // then
             assertThat(orderContext).isNotNull();
@@ -53,7 +54,7 @@ class OrderContextTest {
             );
 
             // when
-            OrderContext orderContext = OrderContext.from(items, products);
+            OrderContext orderContext = OrderContext.of(LocalDate.now(), items, products);
 
             // then
             assertThat(orderContext).isNotNull();
@@ -70,7 +71,7 @@ class OrderContextTest {
             );
 
             // when & then
-            assertThatThrownBy(() -> OrderContext.from(items, products))
+            assertThatThrownBy(() -> OrderContext.of(LocalDate.now(), items, products))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage(PRODUCT_NOT_FOUND.message());
         }
@@ -83,7 +84,7 @@ class OrderContextTest {
             );
 
             // when & then
-            assertThatThrownBy(() -> OrderContext.from(items, products))
+            assertThatThrownBy(() -> OrderContext.of(LocalDate.now(), items, products))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage(WRONG_ORDER_INPUT.message());
         }
@@ -96,7 +97,7 @@ class OrderContextTest {
             );
 
             // when & then
-            assertThatThrownBy(() -> OrderContext.from(items, products))
+            assertThatThrownBy(() -> OrderContext.of(LocalDate.now(), items, products))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage(WRONG_ORDER_INPUT.message());
         }
@@ -114,7 +115,7 @@ class OrderContextTest {
             );
 
             // when
-            OrderContext orderContext = OrderContext.from(items, products);
+            OrderContext orderContext = OrderContext.of(LocalDate.now(), items, products);
 
             // then
             assertThat(orderContext).isNotNull();

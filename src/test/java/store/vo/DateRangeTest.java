@@ -127,4 +127,63 @@ class DateRangeTest {
             assertThat(dateRange1).isNotEqualTo(dateRange2);
         }
     }
+
+    @Nested
+    class 날짜_포함_여부_테스트 {
+        private final LocalDate startDate = LocalDate.of(2024, 1, 1);
+        private final LocalDate endDate = LocalDate.of(2024, 12, 31);
+        private final DateRange dateRange = DateRange.of(startDate, endDate);
+
+        @Test
+        void 범위_내의_날짜는_포함된다() {
+            // given
+            LocalDate date = LocalDate.of(2024, 6, 15);
+
+            // when & then
+            assertThat(dateRange.contains(date)).isTrue();
+        }
+
+        @Test
+        void 시작일과_같은_날짜는_포함된다() {
+            assertThat(dateRange.contains(startDate)).isTrue();
+        }
+
+        @Test
+        void 종료일과_같은_날짜는_포함된다() {
+            assertThat(dateRange.contains(endDate)).isTrue();
+        }
+
+        @Test
+        void 시작일과_종요일이_같을때_같은_날짜는_포함된다() {
+            final LocalDate endDateSameAsStartDate = LocalDate.of(2024, 1, 1);
+            DateRange dateRange = DateRange.of(startDate, endDateSameAsStartDate);
+            
+            assertThat(dateRange.contains(startDate)).isTrue();
+        }
+
+        @Test
+        void 범위_이전_날짜는_포함되지_않는다() {
+            // given
+            LocalDate beforeDate = LocalDate.of(2023, 12, 31);
+
+            // when & then
+            assertThat(dateRange.contains(beforeDate)).isFalse();
+        }
+
+        @Test
+        void 범위_이후_날짜는_포함되지_않는다() {
+            // given
+            LocalDate afterDate = LocalDate.of(2025, 1, 1);
+
+            // when & then
+            assertThat(dateRange.contains(afterDate)).isFalse();
+        }
+
+        @Test
+        void null_날짜는_예외를_발생시킨다() {
+            assertThatThrownBy(() -> dateRange.contains(null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessage("날짜는 null일 수 없습니다.");
+        }
+    }
 }
