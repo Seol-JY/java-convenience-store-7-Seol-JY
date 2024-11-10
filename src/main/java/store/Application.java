@@ -7,6 +7,8 @@ import store.loader.FileDataLoader;
 import store.model.domain.Products;
 import store.model.domain.Promotion;
 import store.model.domain.Promotions;
+import store.util.OrderParser;
+import store.view.InputView;
 import store.view.OutputView;
 
 public class Application {
@@ -27,5 +29,7 @@ public class Application {
 
         new OutputView().printProducts(load);
 
+        String orderInput = new InputView().getOrderInput();
+        OrderParser.parse(orderInput);
     }
 }
