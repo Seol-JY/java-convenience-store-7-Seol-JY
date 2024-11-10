@@ -2,6 +2,7 @@ package store.model.domain;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import store.dto.ProductDto;
 
@@ -101,5 +102,11 @@ public class Products {
         }
 
         return product.getPromotionalStock().getQuantity();
+    }
+
+    public Optional<Product> findByName(String name) {
+        return values.stream()
+                .filter(product -> product.getName().equals(name))
+                .findFirst();
     }
 }
