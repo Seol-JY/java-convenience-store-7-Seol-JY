@@ -18,6 +18,22 @@ public class Product {
         return new Builder(name);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public ProductStock getNormalStock() {
+        return normalStock;
+    }
+
+    public ProductStock getPromotionalStock() {
+        return promotionalStock;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
     public static class Builder {
         private static final String ERROR_NO_STOCK = "상품은 일반 재고와 프로모션 재고 중 적어도 하나는 있어야 합니다.";
         private static final String ERROR_NO_PROMOTION = "프로모션 재고가 있다면 프로모션이 반드시 있어야 합니다.";

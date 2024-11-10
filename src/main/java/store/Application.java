@@ -7,6 +7,7 @@ import store.loader.FileDataLoader;
 import store.model.domain.Products;
 import store.model.domain.Promotion;
 import store.model.domain.Promotions;
+import store.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
@@ -21,7 +22,10 @@ public class Application {
 
         Promotions promotions = Promotions.from(rawPromotions);
         Products products = Products.from(load, promotions);
+        // 재고 업데이트
+        products.updateDtoQuantities(load);
 
+        new OutputView().printProducts(load);
 
     }
 }

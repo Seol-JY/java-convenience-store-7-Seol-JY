@@ -7,6 +7,8 @@ import store.dto.ProductDto;
 
 public class Products {
     private static final String NOT_FOUND_PROMOTION_MESSAGE = "존재하지 않는 프로모션입니다: %s";
+    private static final String MESSAGE_PRODUCT_NOT_MESSAGE = "상품을 찾을 수 없습니다: ";
+    private static final String INVALID_PROMOTION_STOCK_MESSAGE = "유효하지 않은 프로모션 재고입니다.";
 
     private final List<Product> values;
 
@@ -61,5 +63,43 @@ public class Products {
                 .orElseThrow(
                         () -> new IllegalArgumentException(String.format(NOT_FOUND_PROMOTION_MESSAGE, promotionName))
                 );
+    }
+
+    public List<ProductDto> updateDtoQuantities(List<ProductDto> dtos) {
+        return dtos.stream()
+                .map(this::createUpdatedDto)
+                .toList();
+    }
+
+    private ProductDto createUpdatedDto(ProductDto dto) {
+        Product product = findProductByName(dto.name());
+        int actualQuantity = getActualQuantity(product, dto.promotion());
+
+        return ProductDto.of(
+                dto.name(),
+                String.valueOf(dto.price()),
+                String.valueOf(actualQuantity),
+                dto.promotion()
+        );
+    }
+
+    private Product findProductByName(String name) {
+        return values.stream()
+                .filter(product -> product.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(MESSAGE_PRODUCT_NOT_MESSAGE + name));
+    }
+
+
+    private int getActualQuantity(Product product, String promotionName) {
+        if (promotionName == null) {
+            return product.getNormalStock().getQuantity();
+        }
+
+        if (product.getPromotion() == null || !product.getPromotion().getName().equals(promotionName)) {
+            throw new IllegalStateException(INVALID_PROMOTION_STOCK_MESSAGE);
+        }
+
+        return product.getPromotionalStock().getQuantity();
     }
 }
