@@ -1,6 +1,6 @@
 package store.util;
 
-import static store.constant.ExceptionMessage.WRONG_INPUT;
+import static store.constant.ExceptionMessage.WRONG_ORDER_INPUT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class OrderParser {
 
     private static void validateInput(final String input) {
         if (isInvalidInput(input)) {
-            throw new IllegalArgumentException(WRONG_INPUT.message());
+            throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
     }
 
@@ -51,7 +51,7 @@ public class OrderParser {
 
     private static void validateOrders(final List<OrderItemDto> orders) {
         if (orders.isEmpty()) {
-            throw new IllegalArgumentException(WRONG_INPUT.message());
+            throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
     }
 
@@ -64,7 +64,17 @@ public class OrderParser {
 
     private static void validateParts(final String[] parts) {
         if (parts.length != EXPECTED_PARTS_LENGTH) {
-            throw new IllegalArgumentException(WRONG_INPUT.message());
+            throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
+        }
+
+        String firstPart = parts[1];
+        if (firstPart.contains("[") || firstPart.contains("]")) {
+            throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
+        }
+
+        String secondPart = parts[1];
+        if (!secondPart.chars().allMatch(Character::isDigit)) {
+            throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
     }
 }

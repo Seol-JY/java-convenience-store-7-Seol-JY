@@ -3,7 +3,7 @@ package store.util;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.tuple;
-import static store.constant.ExceptionMessage.WRONG_INPUT;
+import static store.constant.ExceptionMessage.WRONG_ORDER_INPUT;
 
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -58,7 +58,7 @@ class OrderParserTest {
         void 빈_입력이나_공백은_예외를_발생시킨다(String input) {
             assertThatThrownBy(() -> OrderParser.parse(input))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(WRONG_INPUT.message());
+                    .hasMessage(WRONG_ORDER_INPUT.message());
         }
     }
 
@@ -72,7 +72,7 @@ class OrderParserTest {
             // when & then
             assertThatThrownBy(() -> OrderParser.parse(input))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(WRONG_INPUT.message());
+                    .hasMessage(WRONG_ORDER_INPUT.message());
         }
 
         @ParameterizedTest
@@ -86,7 +86,7 @@ class OrderParserTest {
         void 잘못된_대괄호_형식은_예외를_발생시킨다(String input) {
             assertThatThrownBy(() -> OrderParser.parse(input))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(WRONG_INPUT.message());
+                    .hasMessage(WRONG_ORDER_INPUT.message());
         }
     }
 
@@ -103,7 +103,7 @@ class OrderParserTest {
         void 잘못된_하이픈_형식은_예외를_발생시킨다(String input) {
             assertThatThrownBy(() -> OrderParser.parse(input))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(WRONG_INPUT.message());
+                    .hasMessage(WRONG_ORDER_INPUT.message());
         }
 
         @Test
@@ -139,7 +139,7 @@ class OrderParserTest {
         void 잘못된_쉼표_형식은_예외를_발생시킨다(String input) {
             assertThatThrownBy(() -> OrderParser.parse(input))
                     .isInstanceOf(IllegalArgumentException.class)
-                    .hasMessage(WRONG_INPUT.message());
+                    .hasMessage(WRONG_ORDER_INPUT.message());
         }
 
         @Test
