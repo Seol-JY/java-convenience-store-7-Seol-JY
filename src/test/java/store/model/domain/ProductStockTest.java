@@ -1,7 +1,7 @@
 package store.model.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,8 @@ class ProductStockTest {
             ProductStock stock = ProductStock.of(price, quantity);
 
             // then
-            assertThat(stock.price()).isEqualTo(price);
-            assertThat(stock.quantity()).isEqualTo(quantity);
+            assertThat(stock.getPrice()).isEqualTo(price);
+            assertThat(stock.getQuantity()).isEqualTo(quantity);
         }
 
         @Test
@@ -36,8 +36,8 @@ class ProductStockTest {
             ProductStock stock = ProductStock.of(price, quantity);
 
             // then
-            assertThat(stock.price()).isZero();
-            assertThat(stock.quantity()).isZero();
+            assertThat(stock.getPrice()).isZero();
+            assertThat(stock.getQuantity()).isZero();
         }
     }
 
@@ -78,40 +78,6 @@ class ProductStockTest {
             assertThatThrownBy(() -> ProductStock.of(1000, quantity))
                     .isInstanceOf(IllegalArgumentException.class)
                     .hasMessage("수량은 0 이상의 정수여야 합니다.");
-        }
-    }
-
-    @Nested
-    class 재고_동등성_검증_테스트 {
-        @Test
-        void 동일한_가격과_수량을_가진_재고는_같다() {
-            // given
-            ProductStock stock1 = ProductStock.of(1000, 10);
-            ProductStock stock2 = ProductStock.of(1000, 10);
-
-            // when & then
-            assertThat(stock1).isEqualTo(stock2);
-            assertThat(stock1.hashCode()).isEqualTo(stock2.hashCode());
-        }
-
-        @Test
-        void 다른_가격을_가진_재고는_다르다() {
-            // given
-            ProductStock stock1 = ProductStock.of(1000, 10);
-            ProductStock stock2 = ProductStock.of(2000, 10);
-
-            // when & then
-            assertThat(stock1).isNotEqualTo(stock2);
-        }
-
-        @Test
-        void 다른_수량을_가진_재고는_다르다() {
-            // given
-            ProductStock stock1 = ProductStock.of(1000, 10);
-            ProductStock stock2 = ProductStock.of(1000, 20);
-
-            // when & then
-            assertThat(stock1).isNotEqualTo(stock2);
         }
     }
 }

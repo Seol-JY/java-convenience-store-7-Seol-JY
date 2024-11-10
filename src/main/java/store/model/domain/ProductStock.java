@@ -1,12 +1,17 @@
 package store.model.domain;
 
-public record ProductStock(Integer price, Integer quantity) {
+public class ProductStock {
     private static final int MINIMUM_AMOUNT = 0;
     private static final String INVALID_PRICE_MESSAGE = "가격은 0 이상의 정수여야 합니다.";
     private static final String INVALID_QUANTITY_MESSAGE = "수량은 0 이상의 정수여야 합니다.";
 
-    public ProductStock {
+    private final Integer price;
+    private Integer quantity;
+
+    private ProductStock(final Integer price, final Integer quantity) {
         validate(price, quantity);
+        this.price = price;
+        this.quantity = quantity;
     }
 
     private void validate(final Integer price, final Integer quantity) {
@@ -18,6 +23,14 @@ public record ProductStock(Integer price, Integer quantity) {
         if (price == null || price < MINIMUM_AMOUNT) {
             throw new IllegalArgumentException(INVALID_PRICE_MESSAGE);
         }
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
     }
 
     private void validateQuantity(final Integer quantity) {
