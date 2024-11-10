@@ -9,7 +9,7 @@ public class InputView {
         return readLineWithPrompt(ORDER_INPUT_MESSAGE);
     }
 
-    private String readLineWithPrompt(String prompt) {
+    private String readLineWithPrompt(final String prompt) {
         System.out.println(prompt);
         return readLine().strip();
     }

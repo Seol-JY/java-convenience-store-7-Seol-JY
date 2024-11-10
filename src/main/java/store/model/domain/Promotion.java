@@ -28,19 +28,19 @@ public class Promotion {
         this.dateRange = dateRange;
     }
 
-    private void validateBuyQuantity(Integer buy) {
+    private void validateBuyQuantity(final Integer buy) {
         if (buy == null || buy < MINIMUM_QUANTITY) {
             throw new IllegalArgumentException(INVALID_BUY_QUANTITY_MESSAGE);
         }
     }
 
-    private void validateGetQuantity(Integer get) {
+    private void validateGetQuantity(final Integer get) {
         if (get == null || get < MINIMUM_QUANTITY) {
             throw new IllegalArgumentException(INVALID_GET_QUANTITY_MESSAGE);
         }
     }
 
-    public static Promotion from(PromotionFileDto dto) {
+    public static Promotion from(final PromotionFileDto dto) {
         return new Promotion(
                 dto.name(),
                 dto.buy(),

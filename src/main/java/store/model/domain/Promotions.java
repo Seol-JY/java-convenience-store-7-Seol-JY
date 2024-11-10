@@ -13,7 +13,7 @@ public class Promotions {
         this.values = values;
     }
 
-    private void validateDuplicatePromotionNames(List<Promotion> values) {
+    private void validateDuplicatePromotionNames(final List<Promotion> values) {
         long uniqueNameCount = values.stream()
                 .map(Promotion::getName)
                 .distinct()
@@ -24,11 +24,11 @@ public class Promotions {
         }
     }
 
-    public static Promotions from(List<Promotion> values) {
+    public static Promotions from(final List<Promotion> values) {
         return new Promotions(values);
     }
 
-    public Optional<Promotion> findByName(String promotionName) {
+    public Optional<Promotion> findByName(final String promotionName) {
         return values.stream()
                 .filter(promotion -> promotion.getName().equals(promotionName))
                 .findFirst();

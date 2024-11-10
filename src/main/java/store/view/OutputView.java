@@ -13,7 +13,7 @@ public class OutputView {
     private static final String SPACE_STRING = " ";
     private static final String NEW_LINE = "\n";
 
-    public void printProducts(List<ProductDto> products) {
+    public void printProducts(final List<ProductDto> products) {
         StringBuilder result = new StringBuilder();
         result.append(WELCOME_MESSAGE)
                 .append(NEW_LINE)
@@ -29,7 +29,7 @@ public class OutputView {
         System.out.println(result);
     }
 
-    private String formatProduct(ProductDto product) {
+    private String formatProduct(final ProductDto product) {
         return String.format(
                 PRODUCT_FORMAT,
                 product.name(),
@@ -39,7 +39,7 @@ public class OutputView {
         );
     }
 
-    private String formatStock(int quantity) {
+    private String formatStock(final int quantity) {
         if (quantity <= 0) {
             return OUT_OF_STOCK;
         }
@@ -47,7 +47,7 @@ public class OutputView {
         return String.format(STOCK_FORMAT, quantity);
     }
 
-    private String formatPromotion(String promotion) {
+    private String formatPromotion(final String promotion) {
         if (promotion == null) {
             return EMPTY_STRING;
         }

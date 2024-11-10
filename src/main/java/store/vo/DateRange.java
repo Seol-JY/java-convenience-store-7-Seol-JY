@@ -12,13 +12,13 @@ public record DateRange(
         validate(startDate, endDate);
     }
 
-    private void validate(LocalDate startDate, LocalDate endDate) {
+    private void validate(final LocalDate startDate, final LocalDate endDate) {
         if (startDate == null || endDate == null || endDate.isBefore(startDate)) {
             throw new IllegalArgumentException(INVALID_DATE_RANGE_MESSAGE);
         }
     }
 
-    public static DateRange of(LocalDate startDate, LocalDate endDate) {
+    public static DateRange of(final LocalDate startDate, final LocalDate endDate) {
         return new DateRange(startDate, endDate);
     }
 }

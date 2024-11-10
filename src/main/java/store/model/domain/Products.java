@@ -16,7 +16,7 @@ public class Products {
         this.values = values;
     }
 
-    public static Products from(List<ProductDto> productDtos, Promotions promotions) {
+    public static Products from(final List<ProductDto> productDtos, final Promotions promotions) {
         Map<String, List<ProductDto>> productsByName = productDtos.stream()
                 .collect(Collectors.groupingBy(ProductDto::name));
 
@@ -28,9 +28,9 @@ public class Products {
     }
 
     private static Product createProduct(
-            String productName,
-            List<ProductDto> dtos,
-            Promotions promotions
+            final String productName,
+            final List<ProductDto> dtos,
+            final Promotions promotions
     ) {
         Product.Builder builder = Product.builder(productName);
 
@@ -42,9 +42,9 @@ public class Products {
     }
 
     private static void addStockToBuilder(
-            Product.Builder builder,
-            ProductDto dto,
-            Promotions promotions
+            final Product.Builder builder,
+            final ProductDto dto,
+            final Promotions promotions
     ) {
         ProductStock stock = ProductStock.of(dto.price(), dto.quantity());
 
@@ -58,20 +58,20 @@ public class Products {
                 .promotion(promotion);
     }
 
-    private static Promotion findPromotion(String promotionName, Promotions promotions) {
+    private static Promotion findPromotion(final String promotionName, final Promotions promotions) {
         return promotions.findByName(promotionName)
                 .orElseThrow(
                         () -> new IllegalArgumentException(String.format(NOT_FOUND_PROMOTION_MESSAGE, promotionName))
                 );
     }
 
-    public List<ProductDto> updateDtoQuantities(List<ProductDto> dtos) {
+    public List<ProductDto> updateDtoQuantities(final List<ProductDto> dtos) {
         return dtos.stream()
                 .map(this::createUpdatedDto)
                 .toList();
     }
 
-    private ProductDto createUpdatedDto(ProductDto dto) {
+    private ProductDto createUpdatedDto(final ProductDto dto) {
         Product product = findProductByName(dto.name());
         int actualQuantity = getActualQuantity(product, dto.promotion());
 
@@ -83,7 +83,7 @@ public class Products {
         );
     }
 
-    private Product findProductByName(String name) {
+    private Product findProductByName(final String name) {
         return values.stream()
                 .filter(product -> product.getName().equals(name))
                 .findFirst()
@@ -91,7 +91,7 @@ public class Products {
     }
 
 
-    private int getActualQuantity(Product product, String promotionName) {
+    private int getActualQuantity(final Product product, final String promotionName) {
         if (promotionName == null) {
             return product.getNormalStock().getQuantity();
         }

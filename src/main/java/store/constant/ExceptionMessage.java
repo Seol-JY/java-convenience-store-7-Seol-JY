@@ -5,7 +5,7 @@ public enum ExceptionMessage {
 
     private final String message;
 
-    ExceptionMessage(String message) {
+    ExceptionMessage(final String message) {
         this.message = message;
     }
 
@@ -13,7 +13,7 @@ public enum ExceptionMessage {
         return message;
     }
 
-    public String format(Object... args) {
+    public String format(final Object... args) {
         return String.format(message, args);
     }
 }

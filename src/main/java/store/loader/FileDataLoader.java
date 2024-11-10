@@ -55,7 +55,7 @@ public class FileDataLoader<T extends FileDto> {
         return convertToDto(nonEmptyFields);
     }
 
-    private List<String> validateAndStripFields(String[] fields) {
+    private List<String> validateAndStripFields(final String[] fields) {
         return Arrays.stream(fields)
                 .map(String::strip)  // 각 필드에서 공백 제거
                 .peek(field -> {
@@ -66,7 +66,7 @@ public class FileDataLoader<T extends FileDto> {
                 .toList();
     }
 
-    private T convertToDto(List<String> nonEmptyFields) {
+    private T convertToDto(final List<String> nonEmptyFields) {
         try {
             Method ofMethod = Arrays.stream(dtoClass.getMethods())
                     .filter(method -> method.getName().equals(FACTORY_METHOD_NAME))
