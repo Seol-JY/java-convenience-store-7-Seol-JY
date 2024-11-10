@@ -1,6 +1,7 @@
 package store.model.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Promotions {
     private static final String DUPLICATE_PROMOTION_NAME_MESSAGE = "중복된 이름의 프로모션이 존재합니다.";
@@ -25,5 +26,11 @@ public class Promotions {
 
     public static Promotions from(List<Promotion> values) {
         return new Promotions(values);
+    }
+
+    public Optional<Promotion> findByName(String promotionName) {
+        return values.stream()
+                .filter(promotion -> promotion.getName().equals(promotionName))
+                .findFirst();
     }
 }
