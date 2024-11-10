@@ -46,8 +46,8 @@ public class NonFunctionalRequirementTest {
         CodeStyle.analyze()
                 .checkRule(
                         StyleRules.methodParameterFinal()
-                        .exclude("Application")
-                        .build()
+                                .exclude("Application")
+                                .build()
                 )
                 .check(BASE_PATH)
                 .assertNoViolations();

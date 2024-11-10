@@ -1,6 +1,5 @@
 package store.dto;
 
-import java.io.File;
 import store.util.NumberParser;
 
 public record ProductFileDto(

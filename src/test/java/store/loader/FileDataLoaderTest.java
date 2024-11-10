@@ -21,10 +21,10 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   name,age,location
-                   John,30,New York
-                   Jane,25,London
-                   """);
+                    name,age,location
+                    John,30,New York
+                    Jane,25,London
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when
@@ -44,9 +44,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                     data1  ,  data2  ,  data3  
-                   """);
+                    header1,header2,header3
+                      data1  ,  data2  ,  data3  
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when
@@ -66,9 +66,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                   data1,data2
-                   """);
+                    header1,header2,header3
+                    data1,data2
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when & then
@@ -82,9 +82,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                   data1,data2,data3,data4
-                   """);
+                    header1,header2,header3
+                    data1,data2,data3,data4
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when & then
@@ -98,9 +98,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                   data1,,data3
-                   """);
+                    header1,header2,header3
+                    data1,,data3
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when & then
@@ -114,9 +114,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                   data1,   ,data3
-                   """);
+                    header1,header2,header3
+                    data1,   ,data3
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when & then
@@ -157,11 +157,11 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                   data1,data2,data3
-
-                   data4,data5,data6
-                   """);
+                    header1,header2,header3
+                    data1,data2,data3
+                    
+                    data4,data5,data6
+                    """);
             FileDataLoader<TestDto> loader = new FileDataLoader<>(TestDto.class);
 
             // when & then
@@ -178,9 +178,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header
-                   data
-                   """);
+                    header
+                    data
+                    """);
             FileDataLoader<InvalidDto> loader = new FileDataLoader<>(InvalidDto.class);
 
             // when & then
@@ -194,9 +194,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                   header1,header2,header3
-                   value1,value2,value3
-                   """);
+                    header1,header2,header3
+                    value1,value2,value3
+                    """);
             FileDataLoader<NoFactoryMethodDto> loader = new FileDataLoader<>(NoFactoryMethodDto.class);
 
             // when & then
@@ -244,9 +244,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                name,price,quantity,promotion
-                상품,1000,10,행사상품
-                """);
+                    name,price,quantity,promotion
+                    상품,1000,10,행사상품
+                    """);
             FileDataLoader<ThreeParamDto> loader = new FileDataLoader<>(ThreeParamDto.class);
 
             // when & then
@@ -260,9 +260,9 @@ class FileDataLoaderTest {
             // given
             Path mdFile = tempDir.resolve("test.md");
             Files.writeString(mdFile, """
-                name,price
-                상품,1000
-                """);
+                    name,price
+                    상품,1000
+                    """);
             FileDataLoader<ThreeParamDto> loader = new FileDataLoader<>(ThreeParamDto.class);
 
             // when & then

@@ -1,6 +1,5 @@
 package store.model.domain;
 
-import java.time.LocalDate;
 import store.dto.PromotionFileDto;
 import store.vo.DateRange;
 

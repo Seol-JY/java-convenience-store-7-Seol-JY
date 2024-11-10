@@ -1,9 +1,9 @@
 package store.model.domain;
 
-import store.dto.ProductFileDto;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import store.dto.ProductFileDto;
 
 public class Products {
     private static final String NOT_FOUND_PROMOTION_MESSAGE = "존재하지 않는 프로모션입니다: %s";

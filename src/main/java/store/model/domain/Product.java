@@ -71,7 +71,6 @@ public class Product {
             return new Product(this);
         }
 
-
         private void validateStockExistence() {
             if (normalStock == null && promotionalStock == null) {
                 throw new IllegalStateException(ERROR_NO_STOCK);

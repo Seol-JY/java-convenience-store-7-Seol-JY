@@ -19,7 +19,7 @@ public class StyleRules {
     public static MethodSizeRule methodSize(int maxLines) {
         return new MethodSizeRule(maxLines);
     }
-    
+
     public static NoElseRule noElse() {
         return new NoElseRule();
     }
