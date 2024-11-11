@@ -47,6 +47,10 @@ public class Product {
     }
 
     public ProductStock getNormalStock() {
+        if (normalStock == null) {
+            return ProductStock.of(promotionalStock.getPrice(), 0);
+        }
+
         return normalStock;
     }
 
