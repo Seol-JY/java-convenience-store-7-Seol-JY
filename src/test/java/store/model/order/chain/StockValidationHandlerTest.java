@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static store.constant.ExceptionMessage.INSUFFICIENT_STOCK;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -21,12 +22,12 @@ import store.model.order.OrderContext;
 class StockValidationHandlerTest {
 
     private StockValidationHandler handler;
-    private LocalDate orderDate;
+    private LocalDateTime orderDateTime;
 
     @BeforeEach
     void setUp() {
         handler = new StockValidationHandler();
-        orderDate = LocalDate.of(2024, 1, 1);
+        orderDateTime = LocalDateTime.of(2024, 1, 1, 0, 0, 0);
     }
 
     @Nested
@@ -35,7 +36,7 @@ class StockValidationHandlerTest {
         void 재고가_충분하면_검증을_통과한다() {
             // given
             Product product = createProductWithStock(10);  // 재고 10개
-            OrderContext orderContext = createNormalOrderContext(product, 5, orderDate);  // 주문 5개
+            OrderContext orderContext = createNormalOrderContext(product, 5, orderDateTime);  // 주문 5개
 
             // when & then
             handler.process(orderContext);  // 예외가 발생하지 않아야 함
@@ -45,7 +46,7 @@ class StockValidationHandlerTest {
         void 재고와_주문_수량이_같으면_검증을_통과한다() {
             // given
             Product product = createProductWithStock(10);  // 재고 10개
-            OrderContext orderContext = createNormalOrderContext(product, 10, orderDate);  // 주문 10개
+            OrderContext orderContext = createNormalOrderContext(product, 10, orderDateTime);  // 주문 10개
 
             // when & then
             handler.process(orderContext);  // 예외가 발생하지 않아야 함
@@ -55,7 +56,7 @@ class StockValidationHandlerTest {
         void 재고보다_많은_수량을_주문하면_예외가_발생한다() {
             // given
             Product product = createProductWithStock(10);  // 재고 10개
-            OrderContext orderContext = createNormalOrderContext(product, 11, orderDate);  // 주문 11개
+            OrderContext orderContext = createNormalOrderContext(product, 11, orderDateTime);  // 주문 11개
 
             // when & then
             assertThatThrownBy(() -> handler.process(orderContext))
@@ -72,7 +73,7 @@ class StockValidationHandlerTest {
                     LocalDate.of(2025, 1, 1),  // 미래의 프로모션
                     LocalDate.of(2025, 12, 31)
             );
-            OrderContext orderContext = createPromotionalOrderContext(product, 6, orderDate);  // 주문 6개
+            OrderContext orderContext = createPromotionalOrderContext(product, 6, orderDateTime);  // 주문 6개
 
             // when & then
             assertThatThrownBy(() -> handler.process(orderContext))
@@ -89,7 +90,7 @@ class StockValidationHandlerTest {
                     LocalDate.of(2024, 1, 1),
                     LocalDate.of(2024, 12, 31)
             );
-            OrderContext orderContext = createPromotionalOrderContext(product, 8, orderDate);  // 주문 8개
+            OrderContext orderContext = createPromotionalOrderContext(product, 8, orderDateTime);  // 주문 8개
 
             // when & then
             handler.process(orderContext);  // 예외가 발생하지 않아야 함
@@ -126,7 +127,7 @@ class StockValidationHandlerTest {
                 .build();
     }
 
-    private OrderContext createNormalOrderContext(Product product, int quantity, LocalDate orderDate) {
+    private OrderContext createNormalOrderContext(Product product, int quantity, LocalDateTime orderDateTime) {
         List<OrderItemDto> items = List.of(
                 OrderItemDto.of(product.getName(), quantity)
         );
@@ -141,10 +142,10 @@ class StockValidationHandlerTest {
                 Promotions.from(List.of())
         );
 
-        return OrderContext.of(orderDate, items, products);
+        return OrderContext.of(this.orderDateTime, items, products);
     }
 
-    private OrderContext createPromotionalOrderContext(Product product, int quantity, LocalDate orderDate) {
+    private OrderContext createPromotionalOrderContext(Product product, int quantity, LocalDateTime orderDateTime) {
         String promotionName = "테스트프로모션";
         List<OrderItemDto> items = List.of(
                 OrderItemDto.of(product.getName(), quantity)
@@ -169,6 +170,6 @@ class StockValidationHandlerTest {
                 Promotions.from(List.of(promotion))
         );
 
-        return OrderContext.of(orderDate, items, products);
+        return OrderContext.of(this.orderDateTime, items, products);
     }
 }

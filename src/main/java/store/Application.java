@@ -1,6 +1,6 @@
 package store;
 
-import java.time.LocalDate;
+import camp.nextstep.edu.missionutils.DateTimes;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -43,7 +43,7 @@ public class Application {
         // TODO: 재시도 범위
         String orderInput = new InputView().getOrderInput();
         List<OrderItemDto> parse = OrderParser.parse(orderInput);
-        OrderContext orderContext = OrderContext.of(LocalDate.now(), parse, products);
+        OrderContext orderContext = OrderContext.of(DateTimes.now(), parse, products);
         OrderHandler stockValidationHandler = new StockValidationHandler();
 
         BiFunction<String, Integer, Boolean> confirmer =

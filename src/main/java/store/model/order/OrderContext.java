@@ -4,6 +4,7 @@ import static store.constant.ExceptionMessage.PRODUCT_NOT_FOUND;
 import static store.constant.ExceptionMessage.WRONG_ORDER_INPUT;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +28,15 @@ public class OrderContext {
         this.products = products;
     }
 
-    public static OrderContext of(final LocalDate orderDate, final List<OrderItemDto> items, final Products products) {
+    public static OrderContext of(final LocalDateTime orderDateTime, final List<OrderItemDto> items,
+                                  final Products products) {
         Map<Product, Integer> orderItems = items.stream()
                 .collect(Collectors.groupingBy(
                         dto -> findProduct(dto.name(), products),
                         Collectors.summingInt(dto -> validateAndGetQuantity(dto.quantity()))
                 ));
 
+        LocalDate orderDate = LocalDate.from(orderDateTime);
         return new OrderContext(orderDate, orderItems, products);
     }
 

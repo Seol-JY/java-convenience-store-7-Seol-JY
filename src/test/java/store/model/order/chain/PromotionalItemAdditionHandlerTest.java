@@ -3,6 +3,7 @@ package store.model.order.chain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -153,7 +154,7 @@ class PromotionalItemAdditionHandlerTest {
                 new OrderItemDto(productName, orderQuantity)
         );
 
-        return OrderContext.of(LocalDate.now(), orderItems, products);
+        return OrderContext.of(LocalDateTime.now(), orderItems, products);
     }
 
     private PromotionalItemAdditionHandler createHandler(boolean shouldConfirm) {
