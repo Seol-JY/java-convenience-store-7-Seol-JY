@@ -13,6 +13,7 @@ import store.model.domain.Promotion;
 import store.model.domain.Promotions;
 import store.model.order.OrderContext;
 import store.model.order.chain.InsufficientPromotionalStockHandler;
+import store.model.order.chain.MembershipDiscountHandler;
 import store.model.order.chain.OrderHandler;
 import store.model.order.chain.PromotionalItemAdditionHandler;
 import store.model.order.chain.StockValidationHandler;
@@ -46,13 +47,11 @@ public class Application {
         List<OrderItemDto> parse = OrderParser.parse(orderInput);
         OrderContext orderContext = OrderContext.of(DateTimes.now(), parse, products);
         OrderHandler stockValidationHandler = new StockValidationHandler();
-
         BiFunction<String, Integer, Boolean> confirmer1 =
                 (productName, quantity) -> withRetry(() -> {
                     String userInput = inputView.getPromotionalItemAdd(productName, quantity);
                     return YesNoParser.parse(userInput);
                 });
-
         OrderHandler promotionalItemAdditionHandler = new PromotionalItemAdditionHandler(confirmer1);
 
         BiFunction<String, Integer, Boolean> confirmer2 =
@@ -60,12 +59,18 @@ public class Application {
                     String userInput = inputView.getNormalPriceConfirmation(productName, quantity);
                     return YesNoParser.parse(userInput);
                 });
-
         OrderHandler insufficientPromotionalStockHandler = new InsufficientPromotionalStockHandler(confirmer2);
+
+        Supplier<Boolean> confirmer3 = () -> withRetry(() -> {
+            String userInput = inputView.getMembershipDiscountConfirmation();
+            return YesNoParser.parse(userInput);
+        });
+        OrderHandler membershipDiscountHandler = new MembershipDiscountHandler(confirmer3);
 
         stockValidationHandler
                 .setNext(promotionalItemAdditionHandler)
                 .setNext(insufficientPromotionalStockHandler)
+                .setNext(membershipDiscountHandler)
                 .handle(orderContext);
     }
 

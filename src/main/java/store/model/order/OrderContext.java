@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import store.dto.OrderItemDto;
 import store.model.domain.Product;
@@ -17,6 +18,7 @@ public class OrderContext {
     private final LocalDate orderDate;
     private final Map<Product, Integer> orderItems;
     private final Products products;
+    private Function<Integer, Integer> membershipDiscountSupplier;
 
     private OrderContext(
             final LocalDate orderDate,
@@ -72,5 +74,9 @@ public class OrderContext {
 
     public Map<Product, Integer> getOrderItems() {
         return Collections.unmodifiableMap(orderItems);
+    }
+
+    public void setMembershipDiscountSupplier(Function<Integer, Integer> membershipDiscountSupplier) {
+        this.membershipDiscountSupplier = membershipDiscountSupplier;
     }
 }
