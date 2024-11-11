@@ -6,7 +6,6 @@ import store.dto.ProductDto;
 import store.dto.ReceiptDto;
 
 public class OutputView {
-    // 기존 상수들 유지
     private static final String WELCOME_MESSAGE = "안녕하세요. W편의점입니다.";
     private static final String PRODUCT_LIST_HEADER = "현재 보유하고 있는 상품입니다.";
     private static final String PRODUCT_FORMAT = "- %s %,d원 %s%s";
@@ -26,9 +25,9 @@ public class OutputView {
     private static final String FINAL_PRICE = "내실돈";
     private static final String NO_PROMOTION = "없음";
 
-    private static final int NAME_COLUMN_WIDTH = 5;
-    private static final int QUANTITY_COLUMN_WIDTH = 13;
-    private static final int PRICE_COLUMN_WIDTH = 15;
+    private static final int NAME_COLUMN_WIDTH = 16;
+    private static final int QUANTITY_COLUMN_WIDTH = 10;
+    private static final int PRICE_COLUMN_WIDTH = 10;
 
     public void printProducts(final List<ProductDto> products) {
         StringBuilder result = new StringBuilder();
