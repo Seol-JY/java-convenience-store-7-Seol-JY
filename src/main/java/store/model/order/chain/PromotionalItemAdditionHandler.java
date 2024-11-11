@@ -26,7 +26,7 @@ public class PromotionalItemAdditionHandler extends OrderHandler {
             }
         });
 
-        promotionalItems.forEach(orderContext::addOrderItem);
+        promotionalItems.forEach(orderContext::addOrderQuantity);
     }
 
     private void processPromotionalItem(Product product, int quantity, Map<Product, Integer> promotionalItems) {

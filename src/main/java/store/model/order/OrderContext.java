@@ -53,9 +53,17 @@ public class OrderContext {
                 .orElseThrow(() -> new IllegalArgumentException(PRODUCT_NOT_FOUND.message()));
     }
 
-    public void addOrderItem(Product product, int quantity) {
+    public void addOrderQuantity(Product product, int quantity) {
         validateAndGetQuantity(quantity);
         orderItems.merge(product, quantity, Integer::sum);
+    }
+
+    public void updateOrderQuantity(Product product, int newQuantity) {
+        orderItems.put(product, newQuantity);
+    }
+
+    public void removeOrderItem(Product product) {
+        orderItems.remove(product);
     }
 
     public LocalDate getOrderDate() {
