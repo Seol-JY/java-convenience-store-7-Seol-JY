@@ -17,6 +17,7 @@ import store.model.order.chain.InventoryReduceHandler;
 import store.model.order.chain.MembershipDiscountHandler;
 import store.model.order.chain.OrderHandler;
 import store.model.order.chain.PromotionalItemAdditionHandler;
+import store.model.order.chain.PurchaseHandler;
 import store.model.order.chain.StockValidationHandler;
 import store.util.OrderParser;
 import store.util.RetryExecutor;
@@ -26,24 +27,6 @@ import store.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
-//
-//        Map<String, ReceiptDto.OrderItemInfo> orderedItems = new HashMap<>();
-//        orderedItems.put("오렌지주스", new ReceiptDto.OrderItemInfo("오렌지주스", 2, 3600));
-//
-//        Map<String, Integer> promotionalItems = new HashMap<>();
-//        promotionalItems.put("오렌지주스", 1);
-//
-//        ReceiptDto.PriceInfo priceInfo = new ReceiptDto.PriceInfo(
-//                2,      // totalQuantity
-//                3600,   // totalPrice
-//                1800,   // promotionDiscount
-//                0       // membershipDiscount
-//        );
-//
-//        ReceiptDto receiptDto = new ReceiptDto(orderedItems, promotionalItems, priceInfo);
-//
-//        // 출력
-//        new OutputView().printReceipt(receiptDto);
 
         List<ProductDto> load = new FileDataLoader<>(ProductDto.class)
                 .load("src/main/resources/products.md");
@@ -56,49 +39,62 @@ public class Application {
 
         Promotions promotions = Promotions.from(rawPromotions);
         Products products = Products.from(load, promotions);
-        // 재고 업데이트
-        products.updateDtoQuantities(load);
 
-        new OutputView().printProducts(load);
-        InputView inputView = new InputView();
+        boolean doNext;
+        do {
+            new OutputView().printProducts(load);
+            InputView inputView = new InputView();
 
-        // TODO: 재시도 범위
-        String orderInput = new InputView().getOrderInput();
-        List<OrderItemDto> parse = OrderParser.parse(orderInput);
-        OrderContext orderContext = OrderContext.of(DateTimes.now(), parse, products);
-        OrderHandler stockValidationHandler = new StockValidationHandler();
-        BiFunction<String, Integer, Boolean> confirmer1 =
-                (productName, quantity) -> withRetry(() -> {
-                    String userInput = inputView.getPromotionalItemAdd(productName, quantity);
-                    return YesNoParser.parse(userInput);
-                });
-        OrderHandler promotionalItemAdditionHandler = new PromotionalItemAdditionHandler(confirmer1);
+            OrderContext orderContext = withRetry(
+                    () -> {
+                        String orderInput = inputView.getOrderInput();
+                        List<OrderItemDto> parse = OrderParser.parse(orderInput);
+                        OrderContext orderContext2 = OrderContext.of(DateTimes.now(), parse, products);
+                        OrderHandler stockValidationHandler = new StockValidationHandler();
+                        stockValidationHandler.handle(orderContext2);
+                        return orderContext2;
+                    }
+            );
 
-        BiFunction<String, Integer, Boolean> confirmer2 =
-                (productName, quantity) -> withRetry(() -> {
-                    String userInput = inputView.getNormalPriceConfirmation(productName, quantity);
-                    return YesNoParser.parse(userInput);
-                });
-        OrderHandler insufficientPromotionalStockHandler = new InsufficientPromotionalStockHandler(confirmer2);
+            BiFunction<String, Integer, Boolean> confirmer1 =
+                    (productName, quantity) -> withRetry(() -> {
+                        String userInput = inputView.getPromotionalItemAdd(productName, quantity);
+                        return YesNoParser.parse(userInput);
+                    });
 
-        Supplier<Boolean> confirmer3 = () -> withRetry(() -> {
-            String userInput = inputView.getMembershipDiscountConfirmation();
-            return YesNoParser.parse(userInput);
-        });
-        OrderHandler membershipDiscountHandler = new MembershipDiscountHandler(confirmer3);
+            OrderHandler promotionalItemAdditionHandler = new PromotionalItemAdditionHandler(confirmer1);
 
-        OrderHandler inventoryReduceHandler = new InventoryReduceHandler();
+            BiFunction<String, Integer, Boolean> confirmer2 =
+                    (productName, quantity) -> withRetry(() -> {
+                        String userInput = inputView.getNormalPriceConfirmation(productName, quantity);
+                        return YesNoParser.parse(userInput);
+                    });
+            OrderHandler insufficientPromotionalStockHandler = new InsufficientPromotionalStockHandler(confirmer2);
 
-        stockValidationHandler
-                .setNext(promotionalItemAdditionHandler)
-                .setNext(insufficientPromotionalStockHandler)
-                .setNext(membershipDiscountHandler)
-                .setNext(inventoryReduceHandler)
-                .handle(orderContext);
+            Supplier<Boolean> confirmer3 = () -> withRetry(() -> {
+                String userInput = inputView.getMembershipDiscountConfirmation();
+                return YesNoParser.parse(userInput);
+            });
+            OrderHandler membershipDiscountHandler = new MembershipDiscountHandler(confirmer3);
 
-        List<ProductDto> productDtos = products.updateDtoQuantities(load);
-        new OutputView().printProducts(productDtos);
+            OrderHandler inventoryReduceHandler = new InventoryReduceHandler();
 
+            OrderHandler purchaseHandler = new PurchaseHandler();
+
+            promotionalItemAdditionHandler
+                    .setNext(insufficientPromotionalStockHandler)
+                    .setNext(membershipDiscountHandler)
+                    .setNext(inventoryReduceHandler)
+                    .setNext(purchaseHandler);
+
+            promotionalItemAdditionHandler.handle(orderContext);
+
+            new OutputView().printReceipt(orderContext.getReceipt());
+            load = products.updateDtoQuantities(load);
+
+            String userInput = inputView.getAdditionalPurchaseConfirmation();
+            doNext = YesNoParser.parse(userInput);
+        } while (doNext);
     }
 
     private static <T> T withRetry(Supplier<T> function) {
