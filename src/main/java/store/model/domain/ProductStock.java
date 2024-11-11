@@ -36,11 +36,11 @@ public class ProductStock {
         return new ProductStock(price, quantity);
     }
 
-    public void reduceQuantity(int quantity) {
+    public void reduceQuantity(final int quantity) {
         if (quantity > this.quantity) {
             throw new IllegalStateException(INSUFFICIENT_STOCK_MESSAGE);
         }
-        
+
         this.quantity -= quantity;
     }
 

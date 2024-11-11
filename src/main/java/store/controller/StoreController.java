@@ -32,7 +32,7 @@ public class StoreController {
     private final InputView inputView;
     private final OutputView outputView;
 
-    public StoreController(InputView inputView, OutputView outputView) {
+    public StoreController(final InputView inputView, final OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
     }
@@ -49,7 +49,7 @@ public class StoreController {
         } while (shouldContinue);
     }
 
-    private boolean processSingleOrder(List<ProductDto> products, Products productsModel) {
+    private boolean processSingleOrder(final List<ProductDto> products, final Products productsModel) {
         outputView.printProducts(products);
 
         OrderContext orderContext = createValidatedOrder(productsModel);
@@ -61,7 +61,7 @@ public class StoreController {
         return YesNoParser.parse(userInput);
     }
 
-    private Products createProductsModel(List<ProductDto> products) {
+    private Products createProductsModel(final List<ProductDto> products) {
         List<PromotionFileDto> promotions = new FileDataLoader<>(PromotionFileDto.class)
                 .load(PROMOTIONS_FILE_PATH);
 
@@ -73,7 +73,7 @@ public class StoreController {
         return Products.from(products, promotionsModel);
     }
 
-    private OrderContext createValidatedOrder(Products productsModel) {
+    private OrderContext createValidatedOrder(final Products productsModel) {
         return withRetry(() -> {
             String orderInput = inputView.getOrderInput();
             List<OrderItemDto> orderItems = OrderParser.parse(orderInput);
@@ -84,7 +84,7 @@ public class StoreController {
         });
     }
 
-    private void processOrderWithHandlerChain(OrderContext orderContext) {
+    private void processOrderWithHandlerChain(final OrderContext orderContext) {
         OrderHandler promotionalItemAdditionHandler = createPromotionalItemHandler();
         OrderHandler insufficientPromotionalStockHandler = createInsufficientStockHandler();
         OrderHandler membershipDiscountHandler = createMembershipDiscountHandler();
@@ -127,7 +127,7 @@ public class StoreController {
         return new MembershipDiscountHandler(membershipConfirmer);
     }
 
-    private <T> T withRetry(Supplier<T> function) {
+    private <T> T withRetry(final Supplier<T> function) {
         return RetryExecutor.execute(
                 function,
                 (error) -> outputView.printError(error.getMessage()),

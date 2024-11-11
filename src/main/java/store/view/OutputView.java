@@ -162,7 +162,7 @@ public class OutputView {
         )).append(NEW_LINE);
     }
 
-    private String formatRow(String name, String quantity, String price) {
+    private String formatRow(final String name, final String quantity, final String price) {
         return String.format("%-" + NAME_COLUMN_WIDTH + "s%"
                         + QUANTITY_COLUMN_WIDTH + "s%"
                         + PRICE_COLUMN_WIDTH + "s",

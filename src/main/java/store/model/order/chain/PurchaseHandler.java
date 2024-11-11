@@ -41,7 +41,7 @@ public class PurchaseHandler extends OrderHandler {
                 );
     }
 
-    private OrderItemInfo createOrderItemInfo(Entry<Product, Integer> entry) {
+    private OrderItemInfo createOrderItemInfo(final Entry<Product, Integer> entry) {
         Product product = entry.getKey();
         int quantity = entry.getValue();
         int price = calculateItemPrice(product, quantity);
@@ -49,7 +49,7 @@ public class PurchaseHandler extends OrderHandler {
         return new OrderItemInfo(product.getName(), quantity, price);
     }
 
-    private int calculateItemPrice(Product product, int quantity) {
+    private int calculateItemPrice(final Product product, final int quantity) {
         return product.getNormalStock().getPrice() * quantity;
     }
 
@@ -103,7 +103,7 @@ public class PurchaseHandler extends OrderHandler {
                 .sum();
     }
 
-    private int calculatePromotionDiscountForProduct(Product product, StockReduceResultDto result) {
+    private int calculatePromotionDiscountForProduct(final Product product, final StockReduceResultDto result) {
         int freeItems = result.freeQuantity();
         return freeItems * product.getNormalStock().getPrice();
     }
@@ -143,7 +143,11 @@ public class PurchaseHandler extends OrderHandler {
         return calculateItemPrice(product, remainingQuantity);
     }
 
-    private int calculateRemainingQuantity(Promotion promotion, StockReduceResultDto result, int totalQuantity) {
+    private int calculateRemainingQuantity(
+            final Promotion promotion,
+            final StockReduceResultDto result,
+            final int totalQuantity
+    ) {
         int promotionalQuantity = result.promotionalQuantity();
         int setSize = promotion.getSetSize();
         int setCount = promotionalQuantity / setSize;

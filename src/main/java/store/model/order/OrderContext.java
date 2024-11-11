@@ -113,7 +113,7 @@ public class OrderContext {
         this.membershipDiscountSupplier = membershipDiscountSupplier;
     }
 
-    public void attachStockReduceResults(Map<Product, StockReduceResultDto> results) {
+    public void attachStockReduceResults(final Map<Product, StockReduceResultDto> results) {
         this.stockReduceResults = results;
     }
 }
