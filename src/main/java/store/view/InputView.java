@@ -10,7 +10,7 @@ public class InputView {
     private static final String NORMAL_PRICE_CONFIRMATION_MESSAGE =
             "%n현재 %s %d개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)%n";
     private static final String MEMBERSHIP_CONFIRMATION_MESSAGE =
-            "%n멤버십 할인을 받으시겠습니까? (Y/N)%n";
+            "\n멤버십 할인을 받으시겠습니까? (Y/N)";
 
     public String getOrderInput() {
         return readLineWithPrompt(ORDER_INPUT_MESSAGE);
