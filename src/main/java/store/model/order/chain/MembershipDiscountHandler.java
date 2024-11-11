@@ -10,7 +10,7 @@ public class MembershipDiscountHandler extends OrderHandler {
 
     private final Supplier<Boolean> membershipConfirmSupplier;
 
-    public MembershipDiscountHandler(Supplier<Boolean> membershipConfirmSupplier) {
+    public MembershipDiscountHandler(final Supplier<Boolean> membershipConfirmSupplier) {
         this.membershipConfirmSupplier = membershipConfirmSupplier;
     }
 

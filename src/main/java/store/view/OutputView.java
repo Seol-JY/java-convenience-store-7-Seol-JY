@@ -16,33 +16,28 @@ public class OutputView {
 
     public void printProducts(final List<ProductDto> products) {
         StringBuilder result = new StringBuilder();
-        result.append(WELCOME_MESSAGE)
-                .append(NEW_LINE)
-                .append(PRODUCT_LIST_HEADER)
-                .append(NEW_LINE)
-                .append(NEW_LINE);
+        result.append(WELCOME_MESSAGE).append(NEW_LINE).append(PRODUCT_LIST_HEADER).append(NEW_LINE).append(NEW_LINE);
 
         for (ProductDto product : products) {
             result.append(formatProduct(product))
                     .append(NEW_LINE);
 
             if (product.promotion() != null && !containsNullPromotionWithSameName(products, product)) {
-                result.append(formatOutOfStockProduct(product))
-                        .append(NEW_LINE);
+                result.append(formatOutOfStockProduct(product)).append(NEW_LINE);
             }
         }
 
         System.out.println(result);
     }
 
-    private boolean containsNullPromotionWithSameName(List<ProductDto> products, ProductDto targetProduct) {
+    private boolean containsNullPromotionWithSameName(final List<ProductDto> products, final ProductDto targetProduct) {
         return products.stream().anyMatch(product ->
                 product != targetProduct
                         && product.name().equals(targetProduct.name())
                         && product.promotion() == null
         );
     }
-    
+
     private String formatProduct(final ProductDto product) {
         return String.format(
                 PRODUCT_FORMAT,
@@ -79,7 +74,7 @@ public class OutputView {
         return SPACE_STRING + promotion;
     }
 
-    public void printError(String message) {
+    public void printError(final String message) {
         System.out.println(ERROR_PREFIX.concat(message));
     }
 }

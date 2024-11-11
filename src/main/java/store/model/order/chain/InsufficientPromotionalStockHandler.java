@@ -10,7 +10,9 @@ import store.model.order.OrderContext;
 public class InsufficientPromotionalStockHandler extends OrderHandler {
     private final BiFunction<String, Integer, Boolean> normalPriceConfirmationCallback;
 
-    public InsufficientPromotionalStockHandler(BiFunction<String, Integer, Boolean> normalPriceConfirmationCallback) {
+    public InsufficientPromotionalStockHandler(
+            final BiFunction<String, Integer, Boolean> normalPriceConfirmationCallback
+    ) {
         this.normalPriceConfirmationCallback = normalPriceConfirmationCallback;
     }
 
@@ -25,7 +27,7 @@ public class InsufficientPromotionalStockHandler extends OrderHandler {
         });
     }
 
-    private void processPromotionalProduct(OrderContext orderContext, Product product, int quantity) {
+    private void processPromotionalProduct(final OrderContext orderContext, final Product product, final int quantity) {
         ProductStock promotionalStock = product.getPromotionalStock();
         Promotion promotion = product.getPromotion();
         int promotionSetSize = promotion.getBuy() + promotion.getGet();
@@ -39,10 +41,10 @@ public class InsufficientPromotionalStockHandler extends OrderHandler {
     }
 
     private void handleExcessQuantity(
-            OrderContext orderContext,
-            Product product,
-            int originalQuantity,
-            int maxPromotionalQuantity
+            final OrderContext orderContext,
+            final Product product,
+            final int originalQuantity,
+            final int maxPromotionalQuantity
     ) {
         int excessQuantity = originalQuantity - maxPromotionalQuantity;
 

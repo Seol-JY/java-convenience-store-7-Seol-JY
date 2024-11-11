@@ -16,11 +16,11 @@ public class InputView {
         return readLineWithPrompt(ORDER_INPUT_MESSAGE);
     }
 
-    public String getPromotionalItemAdd(String productName, int quantity) {
+    public String getPromotionalItemAdd(final String productName, final int quantity) {
         return readLineWithFormattedPrompt(PROMOTION_ADDITIONAL_MESSAGE, productName, quantity);
     }
 
-    public String getNormalPriceConfirmation(String productName, int quantity) {
+    public String getNormalPriceConfirmation(final String productName, final int quantity) {
         return readLineWithFormattedPrompt(NORMAL_PRICE_CONFIRMATION_MESSAGE, productName, quantity);
     }
 

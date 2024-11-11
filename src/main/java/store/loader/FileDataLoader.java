@@ -72,8 +72,7 @@ public class FileDataLoader<T extends FileDto> {
                     .filter(method -> method.getName().equals(FACTORY_METHOD_NAME))
                     .filter(method -> method.getParameterCount() == nonEmptyFields.size())
                     .filter(method -> Arrays.stream(method.getParameterTypes())
-                            .allMatch(type -> type.equals(String.class)))
-                    .findFirst()
+                            .allMatch(type -> type.equals(String.class))).findFirst()
                     .orElseThrow(() -> new NoSuchMethodException(ERROR_DTO_CONVERSION));
 
             @SuppressWarnings("unchecked")

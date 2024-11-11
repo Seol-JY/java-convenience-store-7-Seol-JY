@@ -30,8 +30,11 @@ public class OrderContext {
         this.products = products;
     }
 
-    public static OrderContext of(final LocalDateTime orderDateTime, final List<OrderItemDto> items,
-                                  final Products products) {
+    public static OrderContext of(
+            final LocalDateTime orderDateTime,
+            final List<OrderItemDto> items,
+            final Products products
+    ) {
         Map<Product, Integer> orderItems = items.stream()
                 .collect(Collectors.groupingBy(
                         dto -> findProduct(dto.name(), products),
@@ -42,7 +45,7 @@ public class OrderContext {
         return new OrderContext(orderDate, orderItems, products);
     }
 
-    private static int validateAndGetQuantity(int quantity) {
+    private static int validateAndGetQuantity(final int quantity) {
         if (quantity < 1) {
             throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
@@ -50,21 +53,21 @@ public class OrderContext {
         return quantity;
     }
 
-    private static Product findProduct(String name, Products products) {
+    private static Product findProduct(final String name, final Products products) {
         return products.findByName(name)
                 .orElseThrow(() -> new IllegalArgumentException(PRODUCT_NOT_FOUND.message()));
     }
 
-    public void addOrderQuantity(Product product, int quantity) {
+    public void addOrderQuantity(final Product product, final int quantity) {
         validateAndGetQuantity(quantity);
         orderItems.merge(product, quantity, Integer::sum);
     }
 
-    public void updateOrderQuantity(Product product, int newQuantity) {
+    public void updateOrderQuantity(final Product product, final int newQuantity) {
         orderItems.put(product, newQuantity);
     }
 
-    public void removeOrderItem(Product product) {
+    public void removeOrderItem(final Product product) {
         orderItems.remove(product);
     }
 
@@ -76,7 +79,7 @@ public class OrderContext {
         return Collections.unmodifiableMap(orderItems);
     }
 
-    public void setMembershipDiscountSupplier(Function<Integer, Integer> membershipDiscountSupplier) {
+    public void setMembershipDiscountSupplier(final Function<Integer, Integer> membershipDiscountSupplier) {
         this.membershipDiscountSupplier = membershipDiscountSupplier;
     }
 }

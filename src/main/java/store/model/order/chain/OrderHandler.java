@@ -5,12 +5,12 @@ import store.model.order.OrderContext;
 public abstract class OrderHandler {
     protected OrderHandler nextHandler;
 
-    public OrderHandler setNext(OrderHandler handler) {
+    public OrderHandler setNext(final OrderHandler handler) {
         this.nextHandler = handler;
         return handler;
     }
 
-    public void handle(OrderContext context) {
+    public void handle(final OrderContext context) {
         process(context);
 
         if (nextHandler != null) {
@@ -18,5 +18,5 @@ public abstract class OrderHandler {
         }
     }
 
-    protected abstract void process(OrderContext context);
+    protected abstract void process(final OrderContext context);
 }

@@ -11,7 +11,7 @@ import store.model.order.OrderContext;
 public class PromotionalItemAdditionHandler extends OrderHandler {
     private final BiFunction<String, Integer, Boolean> promotionConfirmationCallback;
 
-    public PromotionalItemAdditionHandler(BiFunction<String, Integer, Boolean> promotionConfirmationCallback) {
+    public PromotionalItemAdditionHandler(final BiFunction<String, Integer, Boolean> promotionConfirmationCallback) {
         this.promotionConfirmationCallback = promotionConfirmationCallback;
     }
 
@@ -29,7 +29,11 @@ public class PromotionalItemAdditionHandler extends OrderHandler {
         promotionalItems.forEach(orderContext::addOrderQuantity);
     }
 
-    private void processPromotionalItem(Product product, int quantity, Map<Product, Integer> promotionalItems) {
+    private void processPromotionalItem(
+            final Product product,
+            final int quantity,
+            final Map<Product, Integer> promotionalItems
+    ) {
         int promotionalQuantity = calculateAdditionalQuantity(product, quantity);
 
         if (promotionalQuantity > 0 && promotionConfirmationCallback.apply(product.getName(), promotionalQuantity)) {
@@ -37,7 +41,7 @@ public class PromotionalItemAdditionHandler extends OrderHandler {
         }
     }
 
-    private int calculateAdditionalQuantity(Product product, int currentQuantity) {
+    private int calculateAdditionalQuantity(final Product product, final int currentQuantity) {
         int promotionalQuantity = calculatePromotionalQuantity(product.getPromotion(), currentQuantity);
 
         if (promotionalQuantity == 0 || !hasEnoughPromotionalStock(product, currentQuantity, promotionalQuantity)) {
@@ -47,7 +51,7 @@ public class PromotionalItemAdditionHandler extends OrderHandler {
         return promotionalQuantity;
     }
 
-    private int calculatePromotionalQuantity(Promotion promotion, int currentQuantity) {
+    private int calculatePromotionalQuantity(final Promotion promotion, final int currentQuantity) {
         int requiredQuantity = promotion.getBuy();
         int promotionSetSize = requiredQuantity + promotion.getGet();
         int remainingQuantity = currentQuantity % promotionSetSize;
@@ -59,7 +63,11 @@ public class PromotionalItemAdditionHandler extends OrderHandler {
         return promotionSetSize - remainingQuantity;
     }
 
-    private boolean hasEnoughPromotionalStock(Product product, int currentQuantity, int promotionalQuantity) {
+    private boolean hasEnoughPromotionalStock(
+            final Product product,
+            final int currentQuantity,
+            final int promotionalQuantity
+    ) {
         return currentQuantity + promotionalQuantity <= product.getPromotionalStock().getQuantity();
     }
 }
