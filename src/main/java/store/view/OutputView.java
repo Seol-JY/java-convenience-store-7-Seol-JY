@@ -17,7 +17,7 @@ public class OutputView {
     private static final String NEW_LINE = "\n";
     private static final String ERROR_PREFIX = "[ERROR] ";
 
-    private static final String RECEIPT_HEADER = "==============W 편의점================";
+    private static final String RECEIPT_HEADER = "\n==============W 편의점================";
     private static final String RECEIPT_DIVIDER = "====================================";
     private static final String PROMOTION_DIVIDER = "=============증      정===============";
     private static final String TOTAL_PRICE = "총구매액";
@@ -32,7 +32,8 @@ public class OutputView {
 
     public void printProducts(final List<ProductDto> products) {
         StringBuilder result = new StringBuilder();
-        result.append(WELCOME_MESSAGE).append(NEW_LINE).append(PRODUCT_LIST_HEADER).append(NEW_LINE).append(NEW_LINE);
+        result.append(NEW_LINE).append(WELCOME_MESSAGE).append(NEW_LINE).append(PRODUCT_LIST_HEADER).append(NEW_LINE)
+                .append(NEW_LINE);
 
         for (ProductDto product : products) {
             result.append(formatProduct(product))
