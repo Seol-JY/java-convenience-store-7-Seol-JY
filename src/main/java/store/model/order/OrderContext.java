@@ -17,6 +17,8 @@ import store.model.domain.Product;
 import store.model.domain.Products;
 
 public class OrderContext {
+    public static final String MEMBERSHIP_DISCOUNT_NOT_APPLIED = "멤버십 할인이 적용되지 않았습니다.";
+
     private final LocalDate orderDate;
     private final Map<Product, Integer> orderItems;
     private final Products products;
@@ -71,6 +73,10 @@ public class OrderContext {
         orderItems.put(product, newQuantity);
     }
 
+    public boolean isMembershipDiscountApplied() {
+        return membershipDiscountSupplier != null;
+    }
+
     public void removeOrderItem(final Product product) {
         orderItems.remove(product);
     }
@@ -87,6 +93,18 @@ public class OrderContext {
         return receiptDto;
     }
 
+    public Map<Product, StockReduceResultDto> getStockReduceResults() {
+        return Collections.unmodifiableMap(stockReduceResults);
+    }
+
+    public Function<Integer, Integer> getMembershipDiscountSupplier() {
+        if (membershipDiscountSupplier == null) {
+            throw new IllegalStateException(MEMBERSHIP_DISCOUNT_NOT_APPLIED);
+        }
+
+        return membershipDiscountSupplier;
+    }
+
     public void attachReceipt(final ReceiptDto receiptDto) {
         this.receiptDto = receiptDto;
     }
@@ -97,9 +115,5 @@ public class OrderContext {
 
     public void attachStockReduceResults(Map<Product, StockReduceResultDto> results) {
         this.stockReduceResults = results;
-    }
-
-    public Map<Product, StockReduceResultDto> getStockReduceResults() {
-        return Collections.unmodifiableMap(stockReduceResults);
     }
 }
