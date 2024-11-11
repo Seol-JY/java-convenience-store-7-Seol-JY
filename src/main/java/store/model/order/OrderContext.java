@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import store.dto.OrderItemDto;
+import store.dto.ReceiptDto;
+import store.dto.StockReduceResultDto;
 import store.model.domain.Product;
 import store.model.domain.Products;
 
@@ -19,6 +21,8 @@ public class OrderContext {
     private final Map<Product, Integer> orderItems;
     private final Products products;
     private Function<Integer, Integer> membershipDiscountSupplier;
+    private Map<Product, StockReduceResultDto> stockReduceResults;
+    private ReceiptDto receiptDto;
 
     private OrderContext(
             final LocalDate orderDate,
@@ -79,7 +83,23 @@ public class OrderContext {
         return Collections.unmodifiableMap(orderItems);
     }
 
+    public ReceiptDto getReceipt() {
+        return receiptDto;
+    }
+
+    public void attachReceipt(final ReceiptDto receiptDto) {
+        this.receiptDto = receiptDto;
+    }
+
     public void setMembershipDiscountSupplier(final Function<Integer, Integer> membershipDiscountSupplier) {
         this.membershipDiscountSupplier = membershipDiscountSupplier;
+    }
+
+    public void attachStockReduceResults(Map<Product, StockReduceResultDto> results) {
+        this.stockReduceResults = results;
+    }
+
+    public Map<Product, StockReduceResultDto> getStockReduceResults() {
+        return Collections.unmodifiableMap(stockReduceResults);
     }
 }

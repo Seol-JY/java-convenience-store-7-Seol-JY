@@ -13,6 +13,7 @@ import store.model.domain.Promotion;
 import store.model.domain.Promotions;
 import store.model.order.OrderContext;
 import store.model.order.chain.InsufficientPromotionalStockHandler;
+import store.model.order.chain.InventoryReduceHandler;
 import store.model.order.chain.MembershipDiscountHandler;
 import store.model.order.chain.OrderHandler;
 import store.model.order.chain.PromotionalItemAdditionHandler;
@@ -25,6 +26,25 @@ import store.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {
+//
+//        Map<String, ReceiptDto.OrderItemInfo> orderedItems = new HashMap<>();
+//        orderedItems.put("오렌지주스", new ReceiptDto.OrderItemInfo("오렌지주스", 2, 3600));
+//
+//        Map<String, Integer> promotionalItems = new HashMap<>();
+//        promotionalItems.put("오렌지주스", 1);
+//
+//        ReceiptDto.PriceInfo priceInfo = new ReceiptDto.PriceInfo(
+//                2,      // totalQuantity
+//                3600,   // totalPrice
+//                1800,   // promotionDiscount
+//                0       // membershipDiscount
+//        );
+//
+//        ReceiptDto receiptDto = new ReceiptDto(orderedItems, promotionalItems, priceInfo);
+//
+//        // 출력
+//        new OutputView().printReceipt(receiptDto);
+
         List<ProductDto> load = new FileDataLoader<>(ProductDto.class)
                 .load("src/main/resources/products.md");
         List<PromotionFileDto> load2 = new FileDataLoader<>(PromotionFileDto.class)
@@ -67,11 +87,18 @@ public class Application {
         });
         OrderHandler membershipDiscountHandler = new MembershipDiscountHandler(confirmer3);
 
+        OrderHandler inventoryReduceHandler = new InventoryReduceHandler();
+
         stockValidationHandler
                 .setNext(promotionalItemAdditionHandler)
                 .setNext(insufficientPromotionalStockHandler)
                 .setNext(membershipDiscountHandler)
+                .setNext(inventoryReduceHandler)
                 .handle(orderContext);
+
+        List<ProductDto> productDtos = products.updateDtoQuantities(load);
+        new OutputView().printProducts(productDtos);
+
     }
 
     private static <T> T withRetry(Supplier<T> function) {
