@@ -2,6 +2,8 @@ package store;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 import store.dto.OrderItemDto;
 import store.dto.ProductDto;
 import store.dto.PromotionFileDto;
@@ -11,8 +13,11 @@ import store.model.domain.Promotion;
 import store.model.domain.Promotions;
 import store.model.order.OrderContext;
 import store.model.order.chain.OrderHandler;
+import store.model.order.chain.PromotionalItemAdditionHandler;
 import store.model.order.chain.StockValidationHandler;
 import store.util.OrderParser;
+import store.util.RetryExecutor;
+import store.util.YesNoParser;
 import store.view.InputView;
 import store.view.OutputView;
 
@@ -33,6 +38,7 @@ public class Application {
         products.updateDtoQuantities(load);
 
         new OutputView().printProducts(load);
+        InputView inputView = new InputView();
 
         // TODO: 재시도 범위
         String orderInput = new InputView().getOrderInput();
@@ -40,6 +46,26 @@ public class Application {
         OrderContext orderContext = OrderContext.of(LocalDate.now(), parse, products);
         OrderHandler stockValidationHandler = new StockValidationHandler();
 
-        stockValidationHandler.handle(orderContext);
+        BiFunction<String, Integer, Boolean> confirmer =
+                (productName, quantity) -> withRetry(() -> {
+                    String userInput = inputView.getPromotionalItemAdd(productName, quantity);
+                    return YesNoParser.parse(userInput);
+                });
+
+        OrderHandler promotionalItemAdditionHandler = new PromotionalItemAdditionHandler(confirmer);
+
+        stockValidationHandler
+                .setNext(promotionalItemAdditionHandler)
+                .handle(orderContext);
+    }
+
+    private static <T> T withRetry(Supplier<T> function) {
+        OutputView outputView = new OutputView();
+
+        return RetryExecutor.execute(
+                function,
+                (error) -> outputView.printError(error.getMessage()),
+                IllegalArgumentException.class
+        );
     }
 }

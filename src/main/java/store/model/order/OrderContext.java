@@ -37,17 +37,22 @@ public class OrderContext {
         return new OrderContext(orderDate, orderItems, products);
     }
 
-    private static Product findProduct(String name, Products products) {
-        return products.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException(PRODUCT_NOT_FOUND.message()));
-    }
-
     private static int validateAndGetQuantity(int quantity) {
         if (quantity < 1) {
             throw new IllegalArgumentException(WRONG_ORDER_INPUT.message());
         }
 
         return quantity;
+    }
+
+    private static Product findProduct(String name, Products products) {
+        return products.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException(PRODUCT_NOT_FOUND.message()));
+    }
+
+    public void addOrderItem(Product product, int quantity) {
+        validateAndGetQuantity(quantity);
+        orderItems.merge(product, quantity, Integer::sum);
     }
 
     public LocalDate getOrderDate() {

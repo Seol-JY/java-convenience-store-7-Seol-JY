@@ -34,7 +34,7 @@ public class Product {
         return total;
     }
 
-    private boolean isPromotional(final LocalDate date) {
+    public boolean isPromotional(final LocalDate date) {
         if (promotion == null) {
             return false;
         }

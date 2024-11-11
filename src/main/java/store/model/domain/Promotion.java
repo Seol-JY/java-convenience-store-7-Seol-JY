@@ -54,7 +54,19 @@ public class Promotion {
         return dateRange.contains(date);
     }
 
+    public Integer getSetSize() {
+        return buy + get;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public Integer getBuy() {
+        return buy;
+    }
+
+    public Integer getGet() {
+        return get;
     }
 }
